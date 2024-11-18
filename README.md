@@ -1,2 +1,2 @@
 # Address Book
-A simple address book implemented using C.
+A simple address book implemented in C.
