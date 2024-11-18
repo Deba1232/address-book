@@ -190,16 +190,17 @@ void deleteContact(AddressBook *addressBook)
                         count = 0;
                         for(int i=0;i<addressBook->contactCount;i++){
                             if(!strcmp(addressBook->contacts[i].name,nameToDelete)){
-                                idx = i;
                                 flag = 1;
+                                idx = i;
                             }
                             else if(!strncmp(addressBook->contacts[i].name,nameToDelete,strlen(nameToDelete))){
+                                flag = -1;
                                 contactsToDeleteIdxArr[count] = i;
                                 count++;
                             }
                         }
 
-                        if(flag){
+                        if(flag == 1){
                             printf("\nDetails for contact with the name %s :\n",nameToDelete);
 
                             printf("----------------------------------------------------------------------\n");
@@ -231,7 +232,7 @@ void deleteContact(AddressBook *addressBook)
                             }while((choice!='Y') && (choice!='y') && (choice!='N') && (choice!='n'));
 
                         }
-                        else{
+                        if(flag == -1){
                             char choice;
                             
                             do{
@@ -254,6 +255,13 @@ void deleteContact(AddressBook *addressBook)
                                 }
 
                             }while((choice!='Y') && (choice!='y') && (choice!='N') && (choice!='n'));
+                        }
+                        else{
+                            printf("----------------------------------------------------------------------\n");
+                            printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
+                            printf("----------------------------------------------------------------------\n");
+
+                            printf("Name not in the address book\n");
                         }
                     }
                     else{
