@@ -40,26 +40,36 @@ int isValidContactNumber(AddressBook *addressBook, char *phone){
 }
 
 int isValidEmailId(AddressBook *addressBook, char *email){
-    int flag = 0;
+    int flag = 0,aCount = 0;
+
+    for(int i=0;email[i]!='\0';i++){
+        
+        if(email[i] == '@'){
+            aCount++;
+        }
+    }
 
     for(int i=0;email[i]!='\0';i++){
 
-        if(email[i] == '@'){                    //checking for @
+        if(email[i] == '@' && email[i+1] != '@'){   //checking for @
 
-            if(isalnum(email[i-1])){            //checking whether the character before @ is alphabet/digit
+            if(aCount == 1){                        //checking whether there's only one @
 
-                for(int j=0;email[j]!='\0';j++){
+                if(isalnum(email[i-1])){            //checking whether the character before @ is alphabet/digit
 
-                    if(email[j]=='.' && email[j+1]=='c' && email[j+2]=='o' && email[j+3] == 'm'){//checking for .com
+                    for(int j=0;email[j]!='\0';j++){
 
-                        if(isalnum(email[j-1])){ //checking whether the character before .com is alphabet/digit
-                            flag = 1;
+                        if((email[j]=='.') && (email[j+1]=='c') && (email[j+2]=='o') && (email[j+3] == 'm') && (email[j+4] == '\0')){      //checking for .com
+
+                            if(isalnum(email[j-1])){ //checking whether the character before .com is alphabet/digit
+                                flag = 1;
+                            }
+
                         }
-
-                    }
-                }  
+                    }  
+                }
             }
-            
+           
         }
     }
 

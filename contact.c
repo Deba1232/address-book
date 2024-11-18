@@ -172,7 +172,7 @@ void deleteContact(AddressBook *addressBook)
 	/* Define the logic for deletecontact */
 
     char nameToDelete[50];
-    int flag = 0,idx = 0,idxArr[MAX_CONTACTS],count;
+    int flag = 0,idx = 0,contactsToDeleteIdxArr[MAX_CONTACTS],count;
 
     do{
         printf("Enter the name for the contact to delete: ");
@@ -194,7 +194,7 @@ void deleteContact(AddressBook *addressBook)
                                 flag = 1;
                             }
                             else if(!strncmp(addressBook->contacts[i].name,nameToDelete,strlen(nameToDelete))){
-                                idxArr[count] = i;
+                                contactsToDeleteIdxArr[count] = i;
                                 count++;
                             }
                         }
@@ -242,7 +242,7 @@ void deleteContact(AddressBook *addressBook)
                                 {
                                     case 'Y':
                                     case 'y':
-                                        deleteMultipleContacts(addressBook,idxArr,count);
+                                        deleteMultipleContacts(addressBook,contactsToDeleteIdxArr,count);
                                         break;
 
                                     case 'N':

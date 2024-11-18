@@ -2,14 +2,14 @@
 #include <string.h>
 #include "contact.h"
 
-void deleteMultipleContacts(AddressBook *addressBook, int *idxArr, int count){
+void deleteMultipleContacts(AddressBook *addressBook, int *contactsToDeleteIdxArr, int count){
     printf("Contacts deleted successfully.\n");
     printf("\nUpdated address book:\n");
 
     for(int i=0;i<count;i++){
-        strcpy(addressBook->contacts[idxArr[i]].name,"");
-        strcpy(addressBook->contacts[idxArr[i]].phone,"");
-        strcpy(addressBook->contacts[idxArr[i]].email,"");
+        strcpy(addressBook->contacts[contactsToDeleteIdxArr[i]].name,"");
+        strcpy(addressBook->contacts[contactsToDeleteIdxArr[i]].phone,"");
+        strcpy(addressBook->contacts[contactsToDeleteIdxArr[i]].email,"");
     }
 
     for(int i=0;i<addressBook->contactCount;i++){ 

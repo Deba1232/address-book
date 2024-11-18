@@ -4,7 +4,7 @@
 
 void editName(AddressBook *addressBook){
     char nameToEdit[50],editedName[50];
-    int flag = 0,count;
+    int flag = 0,count,similarNamesCount;
             
     do{
         printf("Enter the name you want to edit: ");
@@ -16,6 +16,7 @@ void editName(AddressBook *addressBook){
             if(searchByName(addressBook,nameToEdit)){
                 do{
                     count = 0;
+                    similarNamesCount = 0;
                     printf("\nEnter the exact name you want to edit: ");
                     scanf(" %[^\n]", nameToEdit);
 
@@ -25,6 +26,7 @@ void editName(AddressBook *addressBook){
                             if(!strncmp(addressBook->contacts[i].name,nameToEdit,strlen(nameToEdit))){
                                 if(!strcmp(addressBook->contacts[i].name,nameToEdit)){
                                     count = LOWEST_VALUE;
+                                    similarNamesCount++;
                                 }
 
                                 if(strlen(addressBook->contacts[i].name) != strlen(nameToEdit)){
