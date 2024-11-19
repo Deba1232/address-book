@@ -13,10 +13,10 @@ void listContacts(AddressBook *addressBook)    //int sortCriteria -> this arg ma
     }
     else{
         printf("\n----------------------------------------------------------------------\n");
-        printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
+        printf("%-10s%-25s%-25s%-25s\n","Sl.No.","Name","Contact Number","Email Id");
         printf("----------------------------------------------------------------------\n");
         for(int i=0;i<addressBook->contactCount;i++){            
-            printf("%-25s%-25s%-25s\n",addressBook->contacts[i].name,addressBook->contacts[i].phone,addressBook->contacts[i].email);
+            printf("%-10d%-25s%-25s%-25s\n",i+1,addressBook->contacts[i].name,addressBook->contacts[i].phone,addressBook->contacts[i].email);
         }
     }
     
@@ -192,8 +192,9 @@ void deleteContact(AddressBook *addressBook)
                             if(!strcmp(addressBook->contacts[i].name,nameToDelete)){
                                 flag = 1;
                                 idx = i;
+                                break;
                             }
-                            else if(!strncmp(addressBook->contacts[i].name,nameToDelete,strlen(nameToDelete))){
+                            if(!strncmp(addressBook->contacts[i].name,nameToDelete,strlen(nameToDelete))){
                                 flag = -1;
                                 contactsToDeleteIdxArr[count] = i;
                                 count++;
@@ -256,12 +257,15 @@ void deleteContact(AddressBook *addressBook)
 
                             }while((choice!='Y') && (choice!='y') && (choice!='N') && (choice!='n'));
                         }
-                        else{
+                        else if(flag == 0){
                             printf("----------------------------------------------------------------------\n");
                             printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
                             printf("----------------------------------------------------------------------\n");
 
                             printf("Name not in the address book\n");
+                        }
+                        else{
+                            break;
                         }
                     }
                     else{
