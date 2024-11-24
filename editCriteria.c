@@ -66,7 +66,7 @@ void editName(AddressBook *addressBook){
                                 }
                             }
 
-                            printf("Multiple contacts with same name exists!\n");
+                            printf("Multiple contacts with same name exists (;° ロ°)\n");
                             do{ 
                                 printf("\nEnter the contact number or email ID for the name to edit: ");
                                 scanf(" %49[^\n]",contactNumberOrEmail);
@@ -81,7 +81,7 @@ void editName(AddressBook *addressBook){
                                     }
 
                                     if(contactExists){
-                                        printf("Details for the contact with the provided contact number or email ID:\n");
+                                        printf("\nDetails for the contact with the provided contact number or email ID:\n");
                                         printf("----------------------------------------------------------------------\n");
                                         printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
                                         printf("----------------------------------------------------------------------\n");
@@ -209,7 +209,7 @@ void editContactNumber(AddressBook *addressBook){
         scanf(" %19[^\n]", contactNumberToEdit);
 
         if(isValidContactNumber(addressBook, contactNumberToEdit)){
-            printf("Details for %s:\n",contactNumberToEdit);
+            printf("\nDetails for %s:\n",contactNumberToEdit);
 
             if(searchByContactNumber(addressBook,contactNumberToEdit)){
                 do{
@@ -259,7 +259,7 @@ void editEmailId(AddressBook *addressBook){
         scanf(" %49[^\n]", emailIdToEdit);
 
         if(isValidEmailId(addressBook, emailIdToEdit)){
-            printf("Details for %s:\n",emailIdToEdit);
+            printf("\nDetails for %s:\n",emailIdToEdit);
 
             if(searchByEmailId(addressBook,emailIdToEdit)){
                 do{
