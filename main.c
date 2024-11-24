@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <ctype.h>
 #include "contact.h"
 
 int main() {
@@ -16,36 +15,32 @@ int main() {
         printf("5. List all contacts\n");
         printf("6. Exit\n");
         printf("Enter your choice: ");
-        if(scanf("%d", &choice)){
-            switch (choice) {
-                case 1:
-                    createContact(&addressBook);
-                    break;
-                case 2:
-                    searchContact(&addressBook);
-                    break;
-                case 3:
-                    editContact(&addressBook);
-                    break;
-                case 4:
-                    deleteContact(&addressBook);
-                    break;
-                case 5:
-                    listContacts(&addressBook);
-                    break;
-                case 6:
-                    printf("Saving and Exiting...\n");
-                    //saveContactsToFile(&addressBook);
-                    break;
-                default:
-                    printf("Invalid choice. Please try again.\n");
-            }
+        scanf("%d", &choice);
+        
+        switch (choice) {
+            case 1:
+                createContact(&addressBook);
+                break;
+            case 2:
+                searchContact(&addressBook);
+                break;
+            case 3:
+                editContact(&addressBook);
+                break;
+            case 4:
+                deleteContact(&addressBook);
+                break;
+            case 5:
+                listContacts(&addressBook);
+                break;
+            case 6:
+                printf("Saving and Exiting...\n");
+                //saveContactsToFile(&addressBook);
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
         }
-        else{
-            printf("Enter a numeric value");
-        } 
-
-    }while (choice != 6 && isdigit(choice));   
+    } while (choice != 6);
     
-    return 0;
+       return 0;
 }
