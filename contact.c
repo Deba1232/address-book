@@ -100,6 +100,7 @@ void searchContact(AddressBook *addressBook)
                 printf("Enter the name to search: ");
                 scanf(" %49[^\n]",nameToSearch);
 
+                printf("\nDetails for \"%s\":\n",nameToSearch);
                 searchByName(addressBook,nameToSearch);
 
                 break;
@@ -110,6 +111,7 @@ void searchContact(AddressBook *addressBook)
                 printf("Enter the contact number to search: ");
                 scanf(" %49[^\n]",contactNumberToSearch);
 
+                printf("\nDetails for \"%s\":\n",contactNumberToSearch);
                 searchByContactNumber(addressBook,contactNumberToSearch);
                
                 break;
@@ -120,6 +122,7 @@ void searchContact(AddressBook *addressBook)
                 printf("Enter the email id to search: ");
                 scanf(" %49[^\n]",emailIdToSearch);       
 
+                printf("\nDetails for \"%s\":\n",emailIdToSearch);
                 searchByEmailId(addressBook,emailIdToSearch);
                       
                 break;
@@ -170,7 +173,6 @@ void editContact(AddressBook *addressBook)
 void deleteContact(AddressBook *addressBook)
 {
 	/* Define the logic for deletecontact */
-
     char nameToDelete[50];
     int flag = 0,idx = 0,contactsToDeleteIdxArr[MAX_CONTACTS],count;
 
@@ -179,7 +181,7 @@ void deleteContact(AddressBook *addressBook)
         scanf(" %49[^\n]",nameToDelete);
 
         if(isValidName(nameToDelete)){
-            printf("Details for contact(s) with names containing \"%s\":\n",nameToDelete);
+            printf("\nDetails for contact(s) with names containing \"%s\":\n",nameToDelete);
 
             if(searchByName(addressBook,nameToDelete)){
                 do{ 
@@ -189,26 +191,22 @@ void deleteContact(AddressBook *addressBook)
                     if(isValidName(nameToDelete)){
                         count = 0;
                         for(int i=0;i<addressBook->contactCount;i++){
-                            if(!strcmp(addressBook->contacts[i].name,nameToDelete)){
-                                flag = 1;
-                                idx = i;
-                                break;
-                            }
+                            
                             if(!strncmp(addressBook->contacts[i].name,nameToDelete,strlen(nameToDelete))){
-                                flag = -1;
                                 contactsToDeleteIdxArr[count] = i;
                                 count++;
                             }
                         }
 
-                        if(flag == 1){
+                        //only a single contact with the input name exists
+                        if(count == 1){
                             printf("\nDetails for contact with the name %s :\n",nameToDelete);
 
                             printf("----------------------------------------------------------------------\n");
                             printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
                             printf("----------------------------------------------------------------------\n");
 
-                            printf("%-25s%-25s%-25s\n",addressBook->contacts[idx].name,addressBook->contacts[idx].phone,addressBook->contacts[idx].email);
+                            printf("%-25s%-25s%-25s\n",addressBook->contacts[contactsToDeleteIdxArr[0]].name,addressBook->contacts[contactsToDeleteIdxArr[0]].phone,addressBook->contacts[contactsToDeleteIdxArr[0]].email);
 
                             char choice;
                             do{
@@ -219,7 +217,7 @@ void deleteContact(AddressBook *addressBook)
                                 {
                                     case 'Y':
                                     case 'y':
-                                        deleteSingleContact(addressBook,idx);
+                                        deleteSingleContact(addressBook,contactsToDeleteIdxArr[0]);
                                         break;
 
                                     case 'N':
@@ -233,31 +231,161 @@ void deleteContact(AddressBook *addressBook)
                             }while((choice!='Y') && (choice!='y') && (choice!='N') && (choice!='n'));
 
                         }
-                        if(flag == -1){
-                            char choice;
-                            
-                            do{
-                                printf("Do you want to delete all the contacts with names containing \"%s\"?[y/n]: ",nameToDelete);
-                                scanf(" %c",&choice);
+                        //multiple contacts containing same sequence of letters as input name exists
+                        if(count > 1){
+                            int similarNameIdx[MAX_CONTACTS],similarNamesCount = 0;
 
-                                switch (choice)
-                                {
-                                    case 'Y':
-                                    case 'y':
-                                        deleteMultipleContacts(addressBook,contactsToDeleteIdxArr,count);
-                                        break;
+                            for(int i=0;i<count;i++){ 
+                                if(!strcmp(addressBook->contacts[contactsToDeleteIdxArr[i]].name,nameToDelete)){
+                                    similarNameIdx[similarNamesCount] = i;
+                                    similarNamesCount++;
+                                } 
+                            }
 
-                                    case 'N':
-                                    case 'n':
-                                        break;
+                            //there are similar names
+                            if(similarNamesCount > 1){
+                                char contactNumberOrEmail[50];
+                                int idx,contactExists = 0;
+
+                                printf("\nDetails for contact with the name %s :\n",nameToDelete);
+
+                                printf("----------------------------------------------------------------------\n");
+                                printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
+                                printf("----------------------------------------------------------------------\n");
                                 
-                                    default:
-                                        printf("Invalid choice. Please try again :)\n");
+                                for(int i=0;i<similarNamesCount;i++){
+                                    printf("%-25s%-25s%-25s\n",addressBook->contacts[contactsToDeleteIdxArr[similarNameIdx[i]]].name,addressBook->contacts[contactsToDeleteIdxArr[similarNameIdx[i]]].phone,addressBook->contacts[contactsToDeleteIdxArr[similarNameIdx[i]]].email);
+
+                                }
+                                printf("Multiple contacts with same name exists (;° ロ°)\n");
+
+                                do{ 
+                                    printf("\nEnter the contact number or email ID for the name to edit: ");
+                                    scanf(" %49[^\n]",contactNumberOrEmail);
+
+                                    if(isValidContactNumber(addressBook,contactNumberOrEmail) || isValidEmailId(addressBook,contactNumberOrEmail)){
+                                    
+                                        for(int i=0;i<addressBook->contactCount;i++){
+                                            if(!strcmp(addressBook->contacts[i].phone,contactNumberOrEmail)|| !strcmp(addressBook->contacts[i].email,contactNumberOrEmail)){
+                                                contactExists = 1;
+                                                idx = i;
+                                            }
+                                        }
+
+                                        if(contactExists){
+                                            printf("\nDetails for the contact with the provided contact number or email ID:\n");
+                                            printf("----------------------------------------------------------------------\n");
+                                            printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
+                                            printf("----------------------------------------------------------------------\n");
+
+                                            printf("%-25s%-25s%-25s\n",addressBook->contacts[idx].name,addressBook->contacts[idx].phone,addressBook->contacts[idx].email);
+
+                                            char choice;
+                                            do{
+                                                printf("Do you want to delete this contact?[y/n]: ");
+                                                scanf(" %c",&choice);
+
+                                                switch (choice)
+                                                {
+                                                    case 'Y':
+                                                    case 'y':
+                                                        deleteSingleContact(addressBook,idx);
+                                                        break;
+
+                                                    case 'N':
+                                                    case 'n':
+                                                        break;
+                                
+                                                    default:
+                                                        printf("Invalid choice. Please try again :)\n");
+                                                }
+
+                                            }while((choice!='Y') && (choice!='y') && (choice!='N') && (choice!='n'));
+                                        
+                                        }
+                                        else{
+                                            printf("----------------------------------------------------------------------\n");
+                                            printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
+                                            printf("----------------------------------------------------------------------\n");
+                                            printf("Contact not in address book\n");
+                                        }
+                                    }
+                                    else{
+                                        printf("Not a proper contact number or email ID, try again :)\n");
+                                    }
+
+                                }while(!isValidContactNumber(addressBook,contactNumberOrEmail) && !isValidEmailId(addressBook,contactNumberOrEmail));
+                            }
+                            else{
+                                int idx,flag = 0;
+                                for(int i=0;i<count;i++){
+                               
+                                    if(!strcmp(addressBook->contacts[contactsToDeleteIdxArr[i]].name,nameToDelete)){
+                                        flag = 1;
+                                        idx = i;
+                                    }
+                                 
                                 }
 
-                            }while((choice!='Y') && (choice!='y') && (choice!='N') && (choice!='n'));
+                                // there's a name same as sequence of letters in the input
+                                if(flag){
+                                    printf("\nDetails for contact with the name %s :\n",nameToDelete);
+
+                                    printf("----------------------------------------------------------------------\n");
+                                    printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
+                                    printf("----------------------------------------------------------------------\n");
+
+                                    printf("%-25s%-25s%-25s\n",addressBook->contacts[contactsToDeleteIdxArr[idx]].name,addressBook->contacts[contactsToDeleteIdxArr[idx]].phone,addressBook->contacts[contactsToDeleteIdxArr[idx]].email);
+
+                                    char choice;
+                                    do{
+                                        printf("Do you want to delete this contact?[y/n]: ");
+                                        scanf(" %c",&choice);
+
+                                        switch (choice)
+                                        {
+                                            case 'Y':
+                                            case 'y':
+                                                deleteSingleContact(addressBook,contactsToDeleteIdxArr[idx]);
+                                                break;
+
+                                            case 'N':
+                                            case 'n':
+                                                break;
+                                
+                                            default:
+                                                printf("Invalid choice. Please try again :)\n");
+                                        }
+
+                                    }while((choice!='Y') && (choice!='y') && (choice!='N') && (choice!='n'));
+                                }
+                                else{
+                                    char choice;
+
+                                    do{
+                                        printf("Do you want to delete all the contacts with names containing \"%s\"?[y/n]: ",nameToDelete);
+                                        scanf(" %c",&choice);
+
+                                        switch (choice)
+                                        {
+                                            case 'Y':
+                                            case 'y':
+                                                deleteMultipleContacts(addressBook,contactsToDeleteIdxArr,count);
+                                                break;
+
+                                            case 'N':
+                                            case 'n':
+                                                break;
+                                
+                                            default:
+                                                printf("Invalid choice. Please try again :)\n");
+                                        }
+
+                                    }while((choice!='Y') && (choice!='y') && (choice!='N') && (choice!='n'));
+                                }
+                            }
                         }
-                        else if(flag == 0){
+                        if(count == 0){
                             printf("----------------------------------------------------------------------\n");
                             printf("%-25s%-25s%-25s\n","Name","Contact Number","Email Id");
                             printf("----------------------------------------------------------------------\n");
