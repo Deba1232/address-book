@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio_ext.h>
 #include "contact.h"
 #include "file.h"
-// #include "populate.h"
 
 void listContacts(AddressBook *addressBook)    //int sortCriteria -> this arg may be needed later
 {
@@ -23,16 +23,16 @@ void listContacts(AddressBook *addressBook)    //int sortCriteria -> this arg ma
 }
 
 void initialize(AddressBook *addressBook) {
-         addressBook->contactCount = 0;
+    addressBook->contactCount = 0;
     
     // Load contacts from file during initialization (After files)
-    //loadContactsFromFile(addressBook);
+    loadContactsFromFile(addressBook);
 }
 
-// void saveAndExit(AddressBook *addressBook) {
-//     saveContactsToFile(addressBook); // Save contacts to file
-//     exit(EXIT_SUCCESS); // Exit the program
-// }
+void saveAndExit(AddressBook *addressBook) {
+    saveContactsToFile(addressBook); // Save contacts to file
+    exit(EXIT_SUCCESS); // Exit the program
+}
 
 
 void createContact(AddressBook *addressBook)
@@ -91,6 +91,7 @@ void searchContact(AddressBook *addressBook)
         printf("1. Search by name\n2. Search by contact number\n3. Search by email id\n");
     
         printf("Enter your choice: ");
+        __fpurge(stdin);
         scanf("%d",&choice);
 
         switch(choice){
@@ -146,6 +147,7 @@ void editContact(AddressBook *addressBook)
         printf("1. Edit name\n2. Edit contact number\n3. Edit email id");
 
         printf("\nEnter your choice:");
+        __fpurge(stdin);
         scanf("%d",&choice);
 
         switch(choice){
@@ -211,6 +213,7 @@ void deleteContact(AddressBook *addressBook)
                             char choice;
                             do{
                                 printf("Do you want to delete this contact?[y/n]: ");
+                                __fpurge(stdin);
                                 scanf(" %c",&choice);
 
                                 switch (choice)
@@ -283,6 +286,7 @@ void deleteContact(AddressBook *addressBook)
                                             char choice;
                                             do{
                                                 printf("Do you want to delete this contact?[y/n]: ");
+                                                __fpurge(stdin);
                                                 scanf(" %c",&choice);
 
                                                 switch (choice)
@@ -340,6 +344,7 @@ void deleteContact(AddressBook *addressBook)
                                     char choice;
                                     do{
                                         printf("Do you want to delete this contact?[y/n]: ");
+                                        __fpurge(stdin);
                                         scanf(" %c",&choice);
 
                                         switch (choice)
@@ -364,6 +369,7 @@ void deleteContact(AddressBook *addressBook)
 
                                     do{
                                         printf("Do you want to delete all the contacts with names containing \"%s\"?[y/n]: ",nameToDelete);
+                                        __fpurge(stdin);
                                         scanf(" %c",&choice);
 
                                         switch (choice)
