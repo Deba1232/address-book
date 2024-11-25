@@ -5,7 +5,6 @@
 void editName(AddressBook *addressBook){
     char nameToEdit[50],editedName[50];
     int idx,count,similarNameCount;
-    // int flag = 0;
     int similarNameIdx[MAX_CONTACTS];
             
     do{
