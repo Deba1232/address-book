@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdio_ext.h>
 #include "contact.h"
+#include "file.h"
 
 int main() {
     int choice;
@@ -15,6 +17,7 @@ int main() {
         printf("5. List all contacts\n");
         printf("6. Exit\n");
         printf("Enter your choice: ");
+        __fpurge(stdin);
         scanf("%d", &choice);
         
         switch (choice) {
@@ -35,7 +38,7 @@ int main() {
                 break;
             case 6:
                 printf("Saving and Exiting...\n");
-                //saveContactsToFile(&addressBook);
+                saveContactsToFile(&addressBook);
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
